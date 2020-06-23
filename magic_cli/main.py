@@ -47,6 +47,7 @@ def run_from_scratch(project_path: str):
 
 @app.command()
 def create(project_name: str = typer.Argument("magic-server"), replace: bool = False):
+    # TODO add some printing of status
     project_path = Path(project_name)
     if project_path.exists() and not replace:
         typer.echo(
@@ -69,6 +70,17 @@ def create(project_name: str = typer.Argument("magic-server"), replace: bool = F
 
     shutil.rmtree(temp_dir)
     os.remove(zip_filename)
+
+
+@app.command()
+def dev():
+    main_filename = "main.py"
+    if not Path(main_filename).exists():
+        typer.echo(
+            "Cannot find the main.py file. Are you sure you created this app with magic?"
+        )
+        raise typer.Exit()
+    os.system(f"export LOCAL=1 && python {main_filename}")
 
 
 if __name__ == "__main__":
