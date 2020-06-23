@@ -80,9 +80,7 @@ def dev(venv_name: str = typer.Argument(VENV_NAME), create_venv: bool = True):
         )
         venv_path = Path(venv_name)
         if not venv_path.exists():
-            print("VENV PATH", venv_path)
-            print("cwd", Path.cwd())
-            print("dir", os.listdir())
+            typer.echo(f"No venv detected, will make one now with name {venv_name}")
             make_venv(venv_name)
         command = f"source {venv_name}/bin/activate && {command}"
 
@@ -91,7 +89,7 @@ def dev(venv_name: str = typer.Argument(VENV_NAME), create_venv: bool = True):
 
 @app.command()
 def version():
-    typer.echo("7")
+    typer.echo("8")
 
 
 if __name__ == "__main__":
