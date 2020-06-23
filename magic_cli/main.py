@@ -42,9 +42,10 @@ def create(project_name: str = typer.Argument("magic-server"), replace: bool = F
     # TODO add some printing of status
     project_path = Path(project_name)
     if project_path.exists() and not replace:
-        typer.echo(
-            "There is already a project that exists. If you would like to replace this project, "
-            "add the flag --replace to your command"
+        typer.secho(
+            "There is already a project that exists with this name. If you would like to replace this project, "
+            "add the flag --replace to your command",
+            fg=typer.colors.MAGENTA,
         )
         raise typer.Exit()
 
@@ -63,14 +64,20 @@ def create(project_name: str = typer.Argument("magic-server"), replace: bool = F
     shutil.rmtree(temp_dir)
     os.remove(zip_filename)
 
+    typer.secho(
+        f"Your app {project_name} has been created 🚀. Run 'cd {project_name}' and then "
+        f"'magic dev' to start your first magic server 🎩!",
+        fg=typer.colors.BRIGHT_GREEN,
+    )
+
 
 @app.command()
 def dev(venv_name: str = typer.Argument(VENV_NAME), create_venv: bool = True):
-
     main_filename = "main.py"
     if not Path(main_filename).exists():
-        typer.echo(
-            "Cannot find the main.py file. Are you sure you created this app with magic?"
+        typer.secho(
+            "Cannot find the main.py file. Are you sure you created this app with magic?",
+            fg=typer.colors.MAGENTA,
         )
         raise typer.Exit()
 
@@ -79,6 +86,7 @@ def dev(venv_name: str = typer.Argument(VENV_NAME), create_venv: bool = True):
     out = subprocess.run(["which", "python"], stdout=subprocess.PIPE)
     interpreter_path = out.stdout.decode("utf-8").strip()
 
+    # if they are using a venv, let them use it, but maybe install everything on it?
     if f"{venv_name}/bin/python" not in interpreter_path and create_venv:
         typer.echo(
             "No venv is active, will check to see if one exists and make one if not."
@@ -89,6 +97,10 @@ def dev(venv_name: str = typer.Argument(VENV_NAME), create_venv: bool = True):
             make_venv(venv_name)
         command = f"source {venv_name}/bin/activate && {command}"
 
+    typer.secho(
+        "To get interactive docs, go to http://0.0.0.0:8000/docs 🎩!",
+        fg=typer.colors.BRIGHT_GREEN,
+    )
     os.system(command)
 
 
