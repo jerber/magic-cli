@@ -1,35 +1,55 @@
+import os
+from pathlib import Path
+import shutil
+
+import requests
 import typer
 
 
 app = typer.Typer()
 
 
-@app.callback()
-def callback():
-    """
-    Awesome Portal Gun
-    """
-
-
 @app.command()
-def shoot():
-    """
-    Shoot the portal gun
-    """
-    typer.echo("Shooting portal gun")
-
-
-@app.command()
-def load():
+def sowell():
     """
     Load the portal gun
     """
-    typer.echo("Loading portal gun")
+
+    typer.echo("IS GOAT")
+
+
+def download_boilerplate_git_folder(output_filename):
+    github_repo_url = "https://api.github.com/repos/jerber/magic-cli/tarball/master"
+    r = requests.get(github_repo_url, stream=True)
+    with open(output_filename, "wb") as f:
+        for chunk in r.raw.stream(1024, decode_content=False):
+            if chunk:
+                f.write(chunk)
 
 
 @app.command()
-def create():
-    typer.echo("CREATING NOW....")
+def create(project_name: str = typer.Argument("magic-server"), replace: bool = False):
+    project_path = Path(project_name)
+    if project_path.exists() and not replace:
+        typer.echo(
+            "There is already a project that exists. If you would like to replace this project, "
+            "add the flag --replace to your command"
+        )
+
+    zip_filename = "boilerplate.tar.gz"
+    download_boilerplate_git_folder(zip_filename)
+
+    temp_dir = Path("._magic_")
+    shutil.unpack_archive(zip_filename, temp_dir)
+    git_folder = list(temp_dir.glob("*"))[0]
+
+    if project_path.exists():
+        shutil.rmtree(project_path)
+
+    git_folder.replace(project_path)
+
+    shutil.rmtree(temp_dir)
+    os.remove(zip_filename)
 
 
 if __name__ == "__main__":
