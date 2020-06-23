@@ -2,6 +2,8 @@ import sys
 import os
 from pathlib import Path
 import shutil
+import subprocess
+
 
 import requests
 import typer
@@ -64,6 +66,7 @@ def create(project_name: str = typer.Argument("magic-server"), replace: bool = F
 
 @app.command()
 def dev(venv_name: str = typer.Argument(VENV_NAME), create_venv: bool = True):
+
     main_filename = "main.py"
     if not Path(main_filename).exists():
         typer.echo(
@@ -73,8 +76,10 @@ def dev(venv_name: str = typer.Argument(VENV_NAME), create_venv: bool = True):
 
     command = f"export LOCAL=1 && python {main_filename}"
 
-    prefix = getattr(sys, "prefix", "")
-    if venv_name not in prefix and create_venv:
+    out = subprocess.run(["which", "python"], stdout=subprocess.PIPE)
+    interpreter_path = out.stdout.decode("utf-8").strip()
+
+    if f"{venv_name}/bin/python" not in interpreter_path and create_venv:
         typer.echo(
             "No venv is active, will check to see if one exists and make one if not."
         )
