@@ -4,14 +4,18 @@ from pathlib import Path
 import shutil
 import subprocess
 
-
 import requests
 import typer
-
 
 app = typer.Typer()
 
 VENV_NAME = "magic_venv"
+
+REPO_NAME = "jerber/MagicAPI-Boilerplate"
+
+MAIN_FILENAME = "main.py"
+
+START_FILENAME = "start.py"
 
 
 @app.command()
@@ -24,7 +28,7 @@ def sowell():
 
 
 def download_boilerplate_git_folder(output_filename):
-    github_repo_url = "https://api.github.com/repos/jerber/magic-server/tarball/master"
+    github_repo_url = f"https://api.github.com/repos/{REPO_NAME}/tarball/master"
     r = requests.get(github_repo_url, stream=True)
     with open(output_filename, "wb") as f:
         for chunk in r.raw.stream(1024, decode_content=False):
@@ -105,8 +109,36 @@ def dev(venv_name: str = typer.Argument(VENV_NAME), create_venv: bool = True):
 
 
 @app.command()
+def start():
+    typer.secho(
+        "To get interactive docs, go to http://0.0.0.0:8000/docs 🎩!",
+        fg=typer.colors.BRIGHT_GREEN,
+    )
+    command = f"python {START_FILENAME}"
+    os.system(command)
+
+
+@app.command()
+def test():
+    command = f"pytest -s -v"
+    os.system(command)
+
+
+@app.command()
+def deploy():
+    command = f"sls deploy"
+    os.system(command)
+
+
+@app.command()
+def deploy_again():
+    command = f"sls deploy --function app"
+    os.system(command)
+
+
+@app.command()
 def version():
-    typer.echo("8")
+    typer.echo("9")
 
 
 if __name__ == "__main__":
