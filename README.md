@@ -31,12 +31,22 @@ b) The SERVICE and TASKS_TABLE_NAME are required for the app.
 // add firestore
 1) add the firestore service account json to the < app name > and name it "my-service-account.json"
 
+// to deploy to aws lambda
+1) npm i
+
+2) magic deploy
 
 That should be it for the setup!
 
 Time to run it!
 
 To start a local server: magic start
+
 To test local server (while local server is running): magic test
+
 To deploy for the first time or any time you change the serverless yaml: magic deploy
+
 To deploy when you just edited the app code: magic deploy_again
+
+To update magic-cli:
+pip install --upgrade magic-cli
