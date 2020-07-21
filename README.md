@@ -32,7 +32,10 @@ b) The SERVICE and TASKS_TABLE_NAME are required for the app.
 1) add the firestore service account json to the < app name > and name it "my-service-account.json"
 
 // to deploy to aws lambda
-1) npm i
+
+1) Create a user on AWS and sign in via the CLI (https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html)
+ 
+2) npm i
 
 2) magic deploy
 
