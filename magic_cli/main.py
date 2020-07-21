@@ -119,7 +119,8 @@ def start():
 
 
 @app.command()
-def test():
+def test(url: str = typer.Argument("")):
+    os.environ['testing_url'] = url
     command = f"pytest -s -v"
     os.system(command)
 
