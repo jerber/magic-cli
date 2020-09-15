@@ -49,7 +49,7 @@ To test local server (while local server is running): magic test
 
 To deploy for the first time or any time you change the serverless yaml: magic deploy
 
-To deploy when you just edited the app code: magic deploy_again
+To deploy when you just edited the app code: magic deploy-again
 
 To update magic-cli:
 pip install --upgrade magic-cli
