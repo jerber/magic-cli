@@ -1,3 +1,6 @@
+# DEPRICATED FOR MAGICAPI-- which has MagicCLI built in!
+
+# OLD:
 # Magic CLI
 
 The best server maker.
