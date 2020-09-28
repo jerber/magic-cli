@@ -19,7 +19,8 @@ Steps:
 
 6) source venv/bin/activate
 
-7) pip install -r requirements.txt
+7) `pip install -r requirements.txt`
+8) `pip install --upgrade magicdb magicapi`
 
 // files needed to run
 8) Create an .env file in the < app name > directory.
